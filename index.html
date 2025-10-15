@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ff7f">
 <title>Retro Clock</title>
+<link href="icon-192.png" rel="icon" type="image/png">
+<link href="icon-192.png" rel="apple-touch-icon" type="image/png">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -206,6 +210,12 @@
     const amEl = document.getElementById('am');
     const pmEl = document.getElementById('pm');
     let colonVisible = true;
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Service Worker Registered'))
+      .catch(err => console.error('Service Worker registration failed:', err));
+    }
 
     function updateClock() {
       const now = new Date();
