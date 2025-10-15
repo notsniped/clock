@@ -1,7 +1,7 @@
 {
   "name": "Retro Clock",
   "short_name": "Clock",
-  "description": "A retro-style 90s glowing clock with AM/PM and weekday LEDs.",
+  "description": "A retro-style 90s glowing clock with AM/PM and weekday LEDs. Inspired by the Dream Machine.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#050505",
