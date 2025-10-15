@@ -1,0 +1,21 @@
+{
+  "name": "Retro Clock",
+  "short_name": "Clock",
+  "description": "A retro-style 90s glowing clock with AM/PM and weekday LEDs.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#00ff7f",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
