@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retro Clock</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clock-glow: #00ff7f;
+    --bg-dark: #050505;
+    --text-dark: #00ff7f;
+    --silkscreen-text: #f5f5e9;
+  }
+
+  body {
+    font-family: 'Share Tech Mono', monospace;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    transition: background-color 0.5s, color 0.5s;
+    cursor: default;
+  }
+
+  .hide-cursor {
+    cursor: none !important;
+  }
+
+  .clock {
+    position: relative;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 60px 100px;
+    border-radius: 30px;
+    box-shadow: 0 0 60px rgba(0, 255, 127, 0.3),
+                inset 0 0 30px rgba(0, 255, 127, 0.1);
+    overflow: hidden;
+    transition: box-shadow 0.3s, border 0.3s;
+  }
+
+  .clock::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -30%;
+    width: 160%;
+    height: 100%;
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 30%,
+      transparent 70%
+    );
+    transform: rotate(-10deg);
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .time-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .time {
+    font-size: 6rem;
+    letter-spacing: 4px;
+    line-height: 1;
+    text-shadow: 0 0 15px var(--clock-glow),
+                 0 0 25px var(--clock-glow),
+                 0 0 40px var(--clock-glow);
+  }
+
+  .colon {
+    display: inline-block;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .ampm-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  .ampm {
+    opacity: 0.25;
+    color: var(--silkscreen-text);
+    transition: opacity 0.3s, text-shadow 0.3s, color 0.3s;
+  }
+
+  .active {
+    color: var(--clock-glow);
+    opacity: 1;
+    text-shadow: 0 0 8px var(--clock-glow),
+                 0 0 15px var(--clock-glow);
+  }
+
+  .date {
+    font-size: 1.4rem;
+    margin-top: 12px;
+    opacity: 0.9;
+    text-shadow: 0 0 8px var(--clock-glow);
+  }
+
+  .day-bar {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+  }
+
+  .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    color: var(--silkscreen-text);
+    opacity: 0.75;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-top: 8px;
+    background-color: rgba(0, 255, 127, 0.15);
+    box-shadow: inset 0 0 4px rgba(0, 255, 127, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  .active-day .dot {
+    background-color: var(--clock-glow);
+    box-shadow: 0 0 8px var(--clock-glow),
+                0 0 15px var(--clock-glow);
+  }
+
+  @media (max-width: 768px) {
+    .clock {
+      box-shadow: none;
+      border: none;
+      padding: 40px 40px;
+    }
+
+    .clock::before {
+      display: none;
+    }
+
+    .time {
+      font-size: 4rem;
+      text-shadow: 0 0 10px var(--clock-glow);
+    }
+
+    .date {
+      font-size: 1.1rem;
+      text-shadow: 0 0 5px var(--clock-glow);
+    }
+
+    .day-bar {
+      gap: 18px;
+    }
+
+    .day {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="clock">
+    <div class="time-container">
+      <div class="time" id="time"></div>
+      <div class="ampm-container">
+        <div id="am" class="ampm">AM</div>
+        <div id="pm" class="ampm">PM</div>
+      </div>
+    </div>
+    <div class="date" id="date"></div>
+
+    <div class="day-bar" id="dayBar">
+      <div class="day"><span>Sun</span><div class="dot"></div></div>
+      <div class="day"><span>Mon</span><div class="dot"></div></div>
+      <div class="day"><span>Tue</span><div class="dot"></div></div>
+      <div class="day"><span>Wed</span><div class="dot"></div></div>
+      <div class="day"><span>Thu</span><div class="dot"></div></div>
+      <div class="day"><span>Fri</span><div class="dot"></div></div>
+      <div class="day"><span>Sat</span><div class="dot"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const body = document.body;
+    const dayBar = document.getElementById('dayBar').children;
+    const amEl = document.getElementById('am');
+    const pmEl = document.getElementById('pm');
+    let colonVisible = true;
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const isPM = hours >= 12;
+      hours = hours % 12 || 12;
+
+      // Blink the colon
+      const colon = `<span class="colon" style="opacity:${colonVisible ? 1 : 0}">:</span>`;
+      colonVisible = !colonVisible;
+
+      const timeStr = `${hours.toString().padStart(2, '0')}${colon}${minutes}`;
+      timeEl.innerHTML = timeStr;
+
+      const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      dateEl.textContent = now.toLocaleDateString(undefined, dateOptions);
+
+      amEl.classList.toggle('active', !isPM);
+      pmEl.classList.toggle('active', isPM);
+
+      const today = now.getDay();
+      [...dayBar].forEach((d, i) => d.classList.toggle('active-day', i === today));
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    let cursorTimeout;
+    function hideCursor() {
+      body.classList.add('hide-cursor');
+    }
+    function showCursor() {
+      body.classList.remove('hide-cursor');
+      clearTimeout(cursorTimeout);
+      cursorTimeout = setTimeout(hideCursor, 3000);
+    }
+    document.addEventListener('mousemove', showCursor);
+    cursorTimeout = setTimeout(hideCursor, 3000);
+  </script>
+</body>
+</html>
