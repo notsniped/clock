@@ -2,6 +2,7 @@ const CACHE_NAME = 'retro-clock-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
+  './style.css',
   './manifest.json',
   './resources/icon-192.png',
   './resources/icon-512.png',
