@@ -3,8 +3,9 @@ const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './resources/icon-192.png',
+  './resources/icon-512.png',
+  './resources/ShareTechMono-Regular.ttf' // Theme font
 ];
 
 // Install service worker and cache resources
