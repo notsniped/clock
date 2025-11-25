@@ -8,13 +8,21 @@
 <title>Retro Clock</title>
 <link href="icon-192.png" rel="icon" type="image/png">
 <link href="icon-192.png" rel="apple-touch-icon" type="image/png">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preload" href="resources/ShareTechMono-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 <style>
   :root {
     --clock-glow: #00ff7f;
     --bg-dark: #050505;
     --text-dark: #00ff7f;
     --silkscreen-text: #f5f5e9;
+  }
+
+  @font-face {
+    font-family: 'Share Tech Mono';
+    src: url('resources/ShareTechMono-Regular.ttf') format('truetype');
+    /*font-weight: normal;
+    font-style: normal;
+    font-display: swap;*/
   }
 
   body {
