@@ -33,6 +33,35 @@
     </div>
   </div>
 
+  <!-- Settings Button -->
+  <button class="settings-btn" id="settingsBtn" title="Settings">
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <circle cx="12" cy="12" r="2" fill="currentColor"/>
+      <path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m10 0h6m-16.78 7.78l4.24-4.24m5.08-5.08l4.24-4.24" 
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+  </button>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label>Color Theme</label>
+          <div class="color-options">
+            <button class="color-btn" data-color="green" title="Green">●</button>
+            <button class="color-btn" data-color="red" title="Red">●</button>
+            <button class="color-btn" data-color="blue" title="Blue">●</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const timeEl = document.getElementById('time');
     const dateEl = document.getElementById('date');
@@ -86,6 +115,58 @@
     }
     document.addEventListener('mousemove', showCursor);
     cursorTimeout = setTimeout(hideCursor, 3000);
+
+    // Settings modal functionality
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsModal = document.getElementById('settingsModal');
+    const modalClose = document.getElementById('modalClose');
+    const colorBtns = document.querySelectorAll('.color-btn');
+
+    // Load saved color preference or default to green
+    const savedColor = localStorage.getItem('clockColor') || 'green';
+    applyColor(savedColor);
+    updateColorBtnState(savedColor);
+
+    settingsBtn.addEventListener('click', () => {
+      settingsModal.classList.add('active');
+    });
+
+    modalClose.addEventListener('click', () => {
+      settingsModal.classList.remove('active');
+    });
+
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.classList.remove('active');
+      }
+    });
+
+    colorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.dataset.color;
+        applyColor(color);
+        localStorage.setItem('clockColor', color);
+        updateColorBtnState(color);
+      });
+    });
+
+    function applyColor(color) {
+      const colors = {
+        green: { glow: '#00ff7f', rgb: '0, 255, 127' },
+        red: { glow: '#ff0055', rgb: '255, 0, 85' },
+        blue: { glow: '#00aaff', rgb: '0, 170, 255' }
+      };
+      const selectedColor = colors[color];
+      document.documentElement.style.setProperty('--clock-glow', selectedColor.glow);
+      document.documentElement.style.setProperty('--text-dark', selectedColor.glow);
+      document.documentElement.style.setProperty('--glow-rgb', selectedColor.rgb);
+    }
+
+    function updateColorBtnState(color) {
+      colorBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.color === color);
+      });
+    }
   </script>
 </body>
 </html>
